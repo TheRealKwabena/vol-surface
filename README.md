@@ -9,6 +9,24 @@ This is Project 1 from the two-project quant finance build plan. Project 2
 (the limit order book / market-making simulator) is a separate, unrelated
 codebase and is not part of this repo.
 
+## Quickstart
+
+```bash
+git clone https://github.com/TheRealKwabena/vol-surface.git
+cd vol-surface
+
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+
+pip install -r requirements.txt
+
+streamlit run app/dashboard.py
+```
+
+Streamlit opens the dashboard at `http://localhost:8501`. Requires Python
+3.9+. See "Running the dashboard" below for what each tab does, and
+"Running the tests" to verify the pricing/surface logic.
+
 ## Assumptions made to start building
 
 Two of the four scoping questions were answered explicitly; two were left to
@@ -56,12 +74,6 @@ where real chain data is noisiest. The solver tries a fast Newton step first
 (converges in 3-4 iterations for liquid near-the-money strikes) and falls
 back to Brent's method, which is bracket-guaranteed to find the root on
 `[1e-6, 5.0]` and cannot diverge, whenever Newton doesn't converge cleanly.
-
-## Setup
-
-```bash
-pip install -r requirements.txt
-```
 
 ## Running the tests
 
@@ -111,6 +123,40 @@ streamlit run app/dashboard.py
 - **Greeks Explorer tab**: pure sliders over the BSM engine, no network
   call — always works, good for building intuition or if data fetching is
   down.
+
+## New frontend (Next.js + shadcn/ui)
+
+The same functionality is also available as a two-service app: a FastAPI
+backend that wraps `vol_surface.pipeline.run_pipeline` as JSON, and a
+Next.js + shadcn/ui frontend. Both `app/dashboard.py` (above) and this
+frontend currently work side by side — the Streamlit dashboard will be
+retired once this frontend is fully verified.
+
+Run both in separate terminals, from the repo root:
+
+```bash
+# Terminal 1 — backend (uses the same venv as above)
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+cd backend && uvicorn main:app --reload --port 8000
+```
+
+```bash
+# Terminal 2 — frontend
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`. The frontend proxies `/api/backend/*` to the
+FastAPI server at `:8000` (configured in `frontend/next.config.ts`), so no
+CORS setup is needed in dev.
+
+- **Vol Surface tab**: same live-data pipeline as the Streamlit version,
+  rendered with Plotly.js.
+- **Greeks Explorer tab**: the BSM pricer/Greeks are ported to TypeScript
+  (`frontend/lib/bsm.ts`) and run entirely client-side — no backend call
+  needed, same as the Streamlit version.
 
 ## Known limitations / things to revisit
 
