@@ -2,7 +2,7 @@
 Vol surface construction: log-moneyness/total-variance coordinates, and
 calendar + butterfly arbitrage checks.
 
-Per recommendation #4: raw (strike, calendar days) axes make surfaces
+Raw (strike, calendar days) axes make surfaces
 incomparable across underlyings and across days for the same underlying
 (a $5 strike step means something totally different for a $50 stock than
 a $5000 index). Two changes fix this:
@@ -16,7 +16,7 @@ a $5000 index). Two changes fix this:
      directly (since sigma itself can legitimately decrease with T while
      w still increases).
 
-Per recommendation #5, two arbitrage checks are computed and surfaced
+Two arbitrage checks are computed and surfaced
 rather than silently ignored:
 
   Calendar arbitrage: for fixed log-moneyness k, total variance w(k, T)

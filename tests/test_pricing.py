@@ -1,5 +1,5 @@
 """
-Correctness tests for the pricing engine, per recommendation #8:
+Correctness tests for the pricing engine.
 
   1. Closed-form Greeks vs. finite-difference bumps of the same pricer.
   2. Put-call parity holding to (near) machine precision.

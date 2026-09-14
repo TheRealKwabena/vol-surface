@@ -1,7 +1,7 @@
 """
 Implied volatility solvers.
 
-Design choice (per project recommendation #3): Brent's method is the
+Design choice: Brent's method is the
 default, not Newton-Raphson. NR divides by vega at every step, and vega
 collapses to ~0 for deep ITM/OTM strikes and very short-dated options --
 exactly the noisiest, least liquid corner of a real option chain. NR

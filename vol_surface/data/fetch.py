@@ -12,7 +12,7 @@ hours). This module isolates all of that risk behind one interface
 CBOE DataShop) later means writing one new function with the same output
 schema, not touching the pricing/surface code at all.
 
-Per project recommendation #2, cleaning happens here, before anything
+Cleaning happens here, before anything
 reaches the solver, and is treated as a first-class pipeline stage rather
 than an afterthought:
   - use mid = (bid+ask)/2, never last traded price (last can be stale by
